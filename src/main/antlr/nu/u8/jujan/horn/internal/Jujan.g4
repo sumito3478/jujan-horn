@@ -134,13 +134,13 @@ lambdaExpression :
   '('
   (
     parameterNames=identifier
-    (':' parameterTypeAnnotations=qualifiedIdentifier)?
+    (':' parameterTypeAnnotations=typeExpression)?
     ('=' parameterDefaultValues=expression)?
     ','
   )*
   (
     lastParameterNames=identifier
-    (':' lastParameterTypeAnnotations=qualifiedIdentifier)?
+    (':' lastParameterTypeAnnotations=typeExpression)?
     ('=' lastParameterDefaultValues=expression)?
   )?
   ')'
