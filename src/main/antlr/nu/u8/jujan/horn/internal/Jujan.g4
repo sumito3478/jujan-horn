@@ -37,7 +37,11 @@ SemiColon : ';';
 
 TextLiteral : '"' ~'"'* '"';
 
-DecimalIntegerLiteral : [1-9][0-9]* | '0';
+fragment DecimalIntegerLiteral : [1-9][0-9]* | '0';
+
+BigIntLiteral : DecimalIntegerLiteral;
+
+Int32Literal : DecimalIntegerLiteral 'i32';
 
 NilLiteral : 'nil';
 
@@ -48,7 +52,8 @@ BooleanLiteral : 'true' | 'false';
 literal :
   NilLiteral
   | BooleanLiteral
-  | DecimalIntegerLiteral
+  | Int32Literal
+  | BigIntLiteral
   | TextLiteral
   ;
 
