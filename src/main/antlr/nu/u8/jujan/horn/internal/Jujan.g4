@@ -81,9 +81,13 @@ lambdaTypeExpression :
   '('
   (
     (
+      parameterNames=identifier
+      ':'
       parameterTypes=typeExpression
       ','
     )*
+    lastParameterName=identifier
+    ':'
     lastParameterType=typeExpression
   )?
   ')'
