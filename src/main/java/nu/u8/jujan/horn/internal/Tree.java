@@ -25,6 +25,130 @@ import java.util.List;
 interface Tree {
   Location getLocation();
   interface Factory {
+    NilLiteral newNilLiteral(
+        Location location
+    );
+    BooleanLiteral newBooleanLiteral(
+        boolean value
+    );
+    Int32Literal newInt32Literal(
+        int value
+    );
+    BigIntLiteral newBigIntLiteral(
+        BigInteger value
+    );
+    TextLiteral newTextLitral(
+        String value
+    );
+    Identifier newIdentifier(
+        String name
+    );
+    QualifiedIdentifier newQualifiedIdentifier(
+        List<? extends Identifier> components
+    );
+    RecordTypeExpression newRecordTypeExpression(
+        List<? extends Pair<? extends Identifier, ? extends TypeExpression>>
+            fields
+    );
+    LambdaTypeExpression newTypeExpression(
+        List<? extends Pair<? extends Identifier, ? extends TypeExpression>>
+            parameters,
+        TypeExpression resultType
+    );
+    ListTypeExpression newListTypeExpression(
+        List<? extends TypeExpression> types,
+        boolean lastStar
+    );
+    TypeOfTypeExpression newTypeOfTypeExpression(
+        QualifiedIdentifier operand
+    );
+    BinaryOperationTypeExpression newBinaryOperationTypeExpression(
+        TypeExpression left,
+        Identifier operator,
+        TypeExpression right
+    );
+    QualifiedTypeIdentifier newQualifiedTypeIdentifier(
+        List<? extends Identifier> components
+    );
+    TypeDeclaration newTypeDeclaration(
+        Identifier name,
+        Identifier operator,
+        TypeExpression body
+    );
+    LambdaExpressionParameter newLambdaExpressionParameter(
+        Identifier name,
+        TypeExpression typeAnnotation,
+        Expression defaultValue
+    );
+    LambdaExpression newLambdaExpression(
+        List<? extends LambdaExpressionParameter> parameters,
+        TypeExpression typeConstraint,
+        Expression body
+    );
+    RecordExpression newRecordExpression(
+        List<? extends Pair<? extends Identifier, ? extends Expression>> fields
+    );
+    ListExpression newListExpression(
+        List<? extends Expression> elements
+    );
+    CompoundExpression newCompoundExpression(
+        List<? extends CompoundExpressionElement> elements,
+        boolean lastSemicolon
+    );
+
+    ThrowExpression newThrowExpression(
+        Expression operand
+    );
+    ReturnExpression newReturnExpression(
+        @Nullable
+        QualifiedIdentifier destination,
+        @Nullable
+        Expression returnValue
+    );
+    DoneExpression newDoneExpression(
+        @Nullable
+        Expression returnValue
+    );
+    Declaration newDeclaration(
+        boolean generic,
+        Identifier name,
+        TypeExpression type,
+        Expression body
+    );
+    LetDeclaration newLetDeclaration(
+        Identifier name,
+        TypeExpression type,
+        Expression body
+    );
+    SlotDeclaration newSlotDeclaration(
+        Identifier name,
+        TypeExpression type,
+        Expression body
+    );
+    SlotDereferernceExpression newSlotDereferernceExpression(
+        QualifiedIdentifier target
+    );
+    SlotAssignmentExpression newSlotAssignmentExpression(
+        SlotDereferernceExpression left,
+        Expression right
+    );
+    BinaryOperationExpression newBinaryOperationExpression(
+        Expression left,
+        Identifier operator,
+        Expression right
+    );
+    IndexingExpression newIndexingExpression(
+        Expression left,
+        Expression right
+    );
+    ApplicationExpression newApplicationExpression(
+        Expression function,
+        List<? extends Pair<? extends Identifier, ? extends Expression>> parameters
+    );
+    UnaryOperationExpression newUnaryOperationExpression(
+        Identifier operator,
+        Expression operand
+    );
 
   }
   interface CompoundExpressionElement extends Tree {
