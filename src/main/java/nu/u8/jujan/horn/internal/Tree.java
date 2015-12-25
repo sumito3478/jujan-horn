@@ -27,12 +27,6 @@ interface Tree {
   interface Factory {
 
   }
-  @Value(staticConstructor = "of")
-  class Location {
-    private final String fileName;
-    private final int line;
-    private final int column;
-  }
   interface CompoundExpressionElement extends Tree {
 
   }
@@ -107,20 +101,23 @@ interface Tree {
   interface ListExpression extends Expression {
     List<? extends Expression> getElements();
   }
-
   interface CompoundExpression extends Expression {
     List<? extends CompoundExpressionElement> getElements();
     boolean hasLastSemicolon();
   }
+
   interface ThrowExpression extends Expression {
     Expression getOperand();
   }
   interface ReturnExpression extends Expression {
-    @Nullable QualifiedIdentifier getDestination();
-    @Nullable Expression getReturnValue();
+    @Nullable
+    QualifiedIdentifier getDestination();
+    @Nullable
+    Expression getReturnValue();
   }
   interface DoneExpression extends Expression {
-    @Nullable Expression getReturnValue();
+    @Nullable
+    Expression getReturnValue();
   }
   interface Declaration extends CompoundExpressionElement {
     boolean isGeneric();
@@ -156,11 +153,16 @@ interface Tree {
   }
   interface ApplicationExpression extends Expression {
     Expression getFunction();
-    List<? extends Pair<? extends Identifier, ? extends Expression>>
-        getParameters();
+    List<? extends Pair<? extends Identifier, ? extends Expression>> getParameters();
   }
   interface UnaryOperationExpression extends Expression {
     Identifier getOperator();
     Expression getOperand();
+  }
+  @Value(staticConstructor = "of")
+  class Location {
+    private final String fileName;
+    private final int line;
+    private final int column;
   }
 }

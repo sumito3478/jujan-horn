@@ -19,7 +19,7 @@ import org.antlr.v4.runtime.ANTLRInputStream
 import org.antlr.v4.runtime.BailErrorStrategy
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.misc.ParseCancellationException
-import spock.lang.*;
+import spock.lang.Specification;
 
 class JujanParserSpec extends Specification {
   private def parseModule(src) {
@@ -30,34 +30,36 @@ class JujanParserSpec extends Specification {
     parser.setErrorHandler(new BailErrorStrategy())
     return parser.module()
   }
+
   def "parse succeeds with valid inputs"() {
     when:
     parseModule(src)
     then:
     noExceptionThrown()
     where:
-    src || result
-    "" || true
-    "#import IO" || true
-    "1000;" || true
-    "1000 + 1000;" || true
-    "IO::println;" || true
-    "IO::println(\"test!\");" || true
-    "#import IO\nIO.println;" || true
-    "#import IO\nIO.println(\"test!\");" || true
-    "1000;" || true
-    "1000 + 1000;" || true
-    "def test = () -> \"test\";" || true
-    "def test = () -> do { IO::println(1); 1 };" || true
+    src                                                     || result
+    ""                                                      || true
+    "#import IO"                                            || true
+    "1000;"                                                 || true
+    "1000 + 1000;"                                          || true
+    "IO::println;"                                          || true
+    "IO::println(\"test!\");"                               || true
+    "#import IO\nIO.println;"                               || true
+    "#import IO\nIO.println(\"test!\");"                    || true
+    "1000;"                                                 || true
+    "1000 + 1000;"                                          || true
+    "def test = () -> \"test\";"                            || true
+    "def test = () -> do { IO::println(1); 1 };"            || true
     "def test = () -> do { let a = 1; IO::println(a); a };" || true
   }
+
   def "parse fails with invalid inputs"() {
     when:
     parseModule(src)
     then:
     thrown(ParseCancellationException)
     where:
-    src || result
+    src                                 || result
     "def -> -> -> this should be error" || false
   }
 }
