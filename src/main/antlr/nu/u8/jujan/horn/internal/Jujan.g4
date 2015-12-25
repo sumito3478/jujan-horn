@@ -234,7 +234,7 @@ slotDeclaration :
 
 slotDereferernceExpression :
   '*'
-  expression
+  qualifiedIdentifier
   ;
 
 slotAssignmentExpression :
