@@ -35,7 +35,7 @@ RawBinaryOperator : '`' ~'`'+ '`';
 
 SemiColon : ';';
 
-StringLiteral : '"' ~'"'* '"';
+TextLiteral : '"' ~'"'* '"';
 
 DecimalIntegerLiteral : [1-9][0-9]* | '0';
 
@@ -49,7 +49,7 @@ literal :
   NilLiteral
   | BooleanLiteral
   | DecimalIntegerLiteral
-  | StringLiteral
+  | TextLiteral
   ;
 
 identifier : CommonIdentifier | RawIdentifier;
