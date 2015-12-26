@@ -28,7 +28,9 @@ class JujanParserSpec extends Specification {
     def tokens = new CommonTokenStream(lexer)
     def parser = new JujanParser(tokens)
     parser.setErrorHandler(new BailErrorStrategy())
-    return parser.module()
+    def module = parser.module()
+    def visitor = TreeGeneratingANTLR4Visitor.of("test.jujan", ImmutableTree.factory)
+    return visitor.visitModule(module);
   }
 
   def "parse succeeds with valid inputs"() {
