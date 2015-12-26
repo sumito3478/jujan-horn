@@ -95,7 +95,6 @@ interface Tree {
         List<? extends CompoundExpressionElement> elements,
         boolean lastSemicolon
     );
-
     ThrowExpression newThrowExpression(
         Expression operand
     );
