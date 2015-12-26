@@ -197,7 +197,7 @@ doneExpression :
   'done' expression?;
 
 declaration :
-  'generic'?
+  generic='generic'?
   'def'
   identifier
   (
