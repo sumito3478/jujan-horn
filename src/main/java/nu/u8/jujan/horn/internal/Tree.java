@@ -48,13 +48,14 @@ interface Tree {
     A visit(ThrowExpression tree);
     A visit(ReturnExpression tree);
     A visit(DoneExpression tree);
-    A visit(Declaration tree);
+    A visit(DefineDeclaration tree);
     A visit(LetDeclaration tree);
     A visit(SlotDeclaration tree);
     A visit(SlotDereferernceExpression tree);
     A visit(SlotAssignmentExpression tree);
     A visit(BinaryOperationExpression tree);
     A visit(IndexingExpression tree);
+    A visit(ApplicationParameter tree);
     A visit(ApplicationExpression tree);
     A visit(UnaryOperationExpression tree);
     default A visit(Tree tree) {
@@ -66,131 +67,181 @@ interface Tree {
         Location location
     );
     BooleanLiteral newBooleanLiteral(
+        Location location,
         boolean value
     );
     Int32Literal newInt32Literal(
+        Location location,
         int value
     );
     BigIntLiteral newBigIntLiteral(
+        Location location,
         BigInteger value
     );
     TextLiteral newTextLiteral(
+        Location location,
         String value
     );
     Identifier newIdentifier(
+        Location location,
         String name
     );
     QualifiedIdentifier newQualifiedIdentifier(
+        Location location,
         List<? extends Identifier> components
     );
     RecordTypeExpression newRecordTypeExpression(
+        Location location,
         List<? extends Pair<? extends Identifier, ? extends TypeExpression>>
             fields
     );
-    LambdaTypeExpression newTypeExpression(
+    LambdaTypeExpression newLambdaTypeExpression(
+        Location location,
         List<? extends Pair<? extends Identifier, ? extends TypeExpression>>
             parameters,
         TypeExpression resultType
     );
     ListTypeExpression newListTypeExpression(
+        Location location,
         List<? extends TypeExpression> types,
         boolean lastStar
     );
     TypeOfTypeExpression newTypeOfTypeExpression(
+        Location location,
         QualifiedIdentifier operand
     );
     BinaryOperationTypeExpression newBinaryOperationTypeExpression(
+        Location location,
         TypeExpression left,
         Identifier operator,
         TypeExpression right
     );
     QualifiedTypeIdentifier newQualifiedTypeIdentifier(
+        Location location,
         List<? extends Identifier> components
     );
     TypeDeclaration newTypeDeclaration(
+        Location location,
         Identifier name,
         Identifier operator,
         TypeExpression body
     );
     LambdaExpressionParameter newLambdaExpressionParameter(
+        Location location,
         Identifier name,
         TypeExpression typeAnnotation,
         Expression defaultValue
     );
     LambdaExpression newLambdaExpression(
+        Location location,
         List<? extends LambdaExpressionParameter> parameters,
         TypeExpression typeConstraint,
         Expression body
     );
     RecordExpression newRecordExpression(
+        Location location,
         List<? extends Pair<? extends Identifier, ? extends Expression>> fields
     );
     ListExpression newListExpression(
+        Location location,
         List<? extends Expression> elements
     );
     CompoundExpression newCompoundExpression(
+        Location location,
         List<? extends CompoundExpressionElement> elements,
         boolean lastSemicolon
     );
     ThrowExpression newThrowExpression(
+        Location location,
         Expression operand
     );
     ReturnExpression newReturnExpression(
+        Location location,
         @Nullable
         QualifiedIdentifier destination,
         @Nullable
         Expression returnValue
     );
     DoneExpression newDoneExpression(
+        Location location,
         @Nullable
         Expression returnValue
     );
-    Declaration newDeclaration(
+    DefineDeclaration newDefineDeclaration(
+        Location location,
         boolean generic,
         Identifier name,
         TypeExpression type,
         Expression body
     );
     LetDeclaration newLetDeclaration(
+        Location location,
         Identifier name,
         TypeExpression type,
         Expression body
     );
     SlotDeclaration newSlotDeclaration(
+        Location location,
         Identifier name,
         TypeExpression type,
         Expression body
     );
     SlotDereferernceExpression newSlotDereferernceExpression(
+        Location location,
         QualifiedIdentifier target
     );
     SlotAssignmentExpression newSlotAssignmentExpression(
+        Location location,
         SlotDereferernceExpression left,
         Expression right
     );
     BinaryOperationExpression newBinaryOperationExpression(
+        Location location,
         Expression left,
         Identifier operator,
         Expression right
     );
     IndexingExpression newIndexingExpression(
+        Location location,
         Expression left,
         Expression right
     );
+    ApplicationParameter newApplicationParameter(
+        Location location,
+        @Nullable
+        Identifier name,
+        Expression value
+    );
     ApplicationExpression newApplicationExpression(
+        Location location,
         Expression function,
-        List<? extends Pair<? extends Identifier, ? extends Expression>> parameters
+        List<? extends ApplicationParameter> parameters
     );
     UnaryOperationExpression newUnaryOperationExpression(
+        Location location,
         Identifier operator,
         Expression operand
     );
-
+    Module newModule(
+        Location location,
+        @Nullable
+        String shebangLine,
+        @Nullable
+        String langLine,
+        List<? extends String> importLines,
+        List<? extends DeclarationOrExpression> components
+    );
   }
   interface CompoundExpressionElement extends Tree {
 
   }
-  interface Expression extends CompoundExpressionElement {
+  interface DeclarationOrExpression extends Tree {
+
+  }
+  interface Declaration extends DeclarationOrExpression {
+
+  }
+  interface Expression extends CompoundExpressionElement, DeclarationOrExpression {
   }
   interface NilLiteral extends Expression {
     default <A> A visit(Visitor<A> visitor) {
@@ -253,7 +304,7 @@ interface Tree {
   }
   interface ListTypeExpression extends TypeExpression {
     List<? extends TypeExpression> getTypes();
-    boolean hasLastStar();
+    boolean isEndingWithStar();
     default <A> A visit(Visitor<A> visitor) {
       return visitor.visit(this);
     }
@@ -278,7 +329,7 @@ interface Tree {
       return visitor.visit(this);
     }
   }
-  interface TypeDeclaration extends Tree {
+  interface TypeDeclaration extends CompoundExpressionElement {
     Identifier getName();
     Identifier getOperator();
     TypeExpression getBody();
@@ -317,7 +368,7 @@ interface Tree {
   }
   interface CompoundExpression extends Expression {
     List<? extends CompoundExpressionElement> getElements();
-    boolean hasLastSemicolon();
+    boolean isEndingWithSemicolon();
     default <A> A visit(Visitor<A> visitor) {
       return visitor.visit(this);
     }
@@ -345,7 +396,7 @@ interface Tree {
       return visitor.visit(this);
     }
   }
-  interface Declaration extends CompoundExpressionElement {
+  interface DefineDeclaration extends CompoundExpressionElement, Declaration {
     boolean isGeneric();
     Identifier getName();
     TypeExpression getType();
@@ -354,7 +405,7 @@ interface Tree {
       return visitor.visit(this);
     }
   }
-  interface LetDeclaration extends CompoundExpressionElement {
+  interface LetDeclaration extends CompoundExpressionElement, Declaration {
     Identifier getName();
     TypeExpression getType();
     Expression getBody();
@@ -362,7 +413,7 @@ interface Tree {
       return visitor.visit(this);
     }
   }
-  interface SlotDeclaration extends Tree {
+  interface SlotDeclaration extends Declaration {
     Identifier getName();
     TypeExpression getType();
     Expression getBody();
@@ -398,9 +449,17 @@ interface Tree {
       return visitor.visit(this);
     }
   }
+  interface ApplicationParameter extends Tree {
+    @Nullable
+    Identifier getName();
+    Expression getValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
+  }
   interface ApplicationExpression extends Expression {
     Expression getFunction();
-    List<? extends Pair<? extends Identifier, ? extends Expression>> getParameters();
+    List<? extends ApplicationParameter> getParameters();
     default <A> A visit(Visitor<A> visitor) {
       return visitor.visit(this);
     }
@@ -408,6 +467,17 @@ interface Tree {
   interface UnaryOperationExpression extends Expression {
     Identifier getOperator();
     Expression getOperand();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
+  }
+  interface Module extends Tree {
+    @Nullable
+    String getShebangLine();
+    @Nullable
+    String getLangLine();
+    List<? extends String> getImportLines();
+    List<? extends DeclarationOrExpression> getComponents();
     default <A> A visit(Visitor<A> visitor) {
       return visitor.visit(this);
     }
