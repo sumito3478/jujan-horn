@@ -59,7 +59,7 @@ literal :
 
 identifier : CommonIdentifier | RawIdentifier;
 
-qualifiedIdentifier : qualifiedIdentifier '::' identifier | identifier;
+qualifiedIdentifier : first=identifier ('::' rest=identifier)*;
 
 recordTypeExpression :
   '{'
