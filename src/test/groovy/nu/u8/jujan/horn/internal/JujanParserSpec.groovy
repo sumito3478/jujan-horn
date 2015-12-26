@@ -53,6 +53,7 @@ class JujanParserSpec extends Specification {
     "def test = () -> \"test\";"                            || true
     "def test = () -> do { IO::println(1); 1 };"            || true
     "def test = () -> do { let a = 1; IO::println(a); a };" || true
+    "def test = (a : A = x, b) -> do { let a = 1; IO::println(a); a };" || true
   }
 
   def "parse fails with invalid inputs"() {
