@@ -37,7 +37,7 @@ interface Tree {
     BigIntLiteral newBigIntLiteral(
         BigInteger value
     );
-    TextLiteral newTextLitral(
+    TextLiteral newTextLiteral(
         String value
     );
     Identifier newIdentifier(
