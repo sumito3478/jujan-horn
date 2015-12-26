@@ -171,19 +171,17 @@ listExpression :
   ']'
   ;
 
+compoundExpressionElement :
+  typeDeclaration
+  | letDeclaration
+  | declaration
+  | expression
+  ;
 
 compoundExpression :
   'do'
   '{'
-  (
-    (
-      typeDeclarations=typeDeclaration
-      | letDeclarations=letDeclaration
-      | declarations=declaration
-      | expressions=expression
-    )
-    ';'
-  )*
+  (compoundExpressionElement ';')*
   lastExpression=expression
   lastSemicolon=';'?
   '}'
