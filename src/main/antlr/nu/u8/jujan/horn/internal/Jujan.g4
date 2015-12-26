@@ -130,18 +130,18 @@ typeDeclaration :
   typeExpression
   ;
 
+lambdaExpressionParameter :
+  parameterNames=identifier
+  (':' parameterTypeAnnotations=typeExpression)?
+  ('=' parameterDefaultValues=expression)?
+  ;
+
+
 lambdaExpression :
   '('
   (
-    parameterNames=identifier
-    (':' parameterTypeAnnotations=typeExpression)?
-    ('=' parameterDefaultValues=expression)?
-    ','
-  )*
-  (
-    lastParameterNames=identifier
-    (':' lastParameterTypeAnnotations=typeExpression)?
-    ('=' lastParameterDefaultValues=expression)?
+    (lambdaExpressionParameter ',')*
+    lambdaExpressionParameter
   )?
   ')'
   ('where' typeConstraint=typeExpression)?
