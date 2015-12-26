@@ -24,6 +24,39 @@ import java.util.List;
 
 interface Tree {
   Location getLocation();
+  interface Visitor<A> {
+    A visit(NilLiteral tree);
+    A visit(BooleanLiteral tree);
+    A visit(Int32Literal tree);
+    A visit(BigIntLiteral tree);
+    A visit(TextLiteral tree);
+    A visit(Identifier tree);
+    A visit(QualifiedIdentifier tree);
+    A visit(RecordTypeExpression tree);
+    A visit(TypeExpression tree);
+    A visit(ListTypeExpression tree);
+    A visit(TypeOfTypeExpression tree);
+    A visit(BinaryOperationTypeExpression tree);
+    A visit(QualifiedTypeIdentifier tree);
+    A visit(TypeDeclaration tree);
+    A visit(LambdaExpressionParameter tree);
+    A visit(LambdaExpression tree);
+    A visit(RecordExpression tree);
+    A visit(ListExpression tree);
+    A visit(CompoundExpression tree);
+    A visit(ThrowExpression tree);
+    A visit(ReturnExpression tree);
+    A visit(DoneExpression tree);
+    A visit(Declaration tree);
+    A visit(LetDeclaration tree);
+    A visit(SlotDeclaration tree);
+    A visit(SlotDereferernceExpression tree);
+    A visit(SlotAssignmentExpression tree);
+    A visit(BinaryOperationExpression tree);
+    A visit(IndexingExpression tree);
+    A visit(ApplicationExpression tree);
+    A visit(UnaryOperationExpression tree);
+  }
   interface Factory {
     NilLiteral newNilLiteral(
         Location location
