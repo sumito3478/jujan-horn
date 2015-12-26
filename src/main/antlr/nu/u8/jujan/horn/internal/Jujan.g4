@@ -257,6 +257,8 @@ module
   EOF
   ;
 
+applicationParameter : (identifier '=')? expression;
+
 expression
   :
   left=expression binaryOperator='.' right=expression
@@ -270,25 +272,7 @@ expression
   | compoundExpression
   | listExpression
   | indexedExpressoin=expression '[' expression ']'
-  | appliedFunction=expression
-    '('
-    (
-      (
-        parameterNames=identifier
-        '='
-        parameterValues=expression
-        ','
-      )*
-      (
-        (
-          lastParameterName=identifier
-          '='
-        )?
-        lastParameterValue=expression
-        ','?
-      )
-    )?
-    ')'
+  | appliedFunction=expression '(' ((applicationParameter ',')* applicationParameter)? ')'
   | unaryOperator='++' operand=expression
   | unaryOperator='--' operand=expression
   | unaryOperator='+' operand=expression
