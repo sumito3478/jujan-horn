@@ -271,7 +271,7 @@ expression
   | recordExpression
   | compoundExpression
   | listExpression
-  | indexedExpressoin=expression '[' expression ']'
+  | indexedExpressoin=expression '[' index=expression ']'
   | appliedFunction=expression '(' ((applicationParameter ',')* applicationParameter)? ')'
   | unaryOperator='++' operand=expression
   | unaryOperator='--' operand=expression
