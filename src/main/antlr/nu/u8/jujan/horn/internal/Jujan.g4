@@ -103,7 +103,7 @@ listTypeExpression :
       ','
     )*
     lastParameterType=typeExpression
-    '*'?
+    lastStar='*'?
   )?
   ']'
   ;
