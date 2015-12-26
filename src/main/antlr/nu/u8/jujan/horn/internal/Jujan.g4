@@ -240,21 +240,20 @@ slotAssignmentExpression :
   '<-'
   expression;
 
+moduleComponent :
+  typeDeclarations=typeDeclaration
+  | slotDeclarations=slotDeclaration
+  | letDeclarations=letDeclaration
+  | declarations=declaration
+  | expressions=expression
+  ;
+
 module
   :
   Shebang?
   Lang?
   Import*
-  (
-    (
-      typeDeclarations=typeDeclaration
-      | slotDeclarations=slotDeclaration
-      | letDeclarations=letDeclaration
-      | declarations=declaration
-      | expressions=expression
-    )
-    ';'
-  )*
+  (moduleComponent ';')*
   EOF
   ;
 
