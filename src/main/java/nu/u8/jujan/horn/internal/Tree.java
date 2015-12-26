@@ -24,6 +24,7 @@ import java.util.List;
 
 interface Tree {
   Location getLocation();
+  <A> A visit(Visitor<A> visitor);
   interface Visitor<A> {
     A visit(NilLiteral tree);
     A visit(BooleanLiteral tree);
@@ -56,6 +57,9 @@ interface Tree {
     A visit(IndexingExpression tree);
     A visit(ApplicationExpression tree);
     A visit(UnaryOperationExpression tree);
+    default A visit(Tree tree) {
+      return tree.visit(this);
+    }
   }
   interface Factory {
     NilLiteral newNilLiteral(
@@ -189,24 +193,45 @@ interface Tree {
   interface Expression extends CompoundExpressionElement {
   }
   interface NilLiteral extends Expression {
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface BooleanLiteral extends Expression {
     boolean getValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface Int32Literal extends Expression {
     int getValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface BigIntLiteral extends Expression {
     BigInteger getValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface TextLiteral extends Expression {
     String getValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface Identifier extends Expression {
     String getName();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface QualifiedIdentifier extends Expression {
     List<? extends Identifier> getComponents();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface TypeExpression extends Tree {
 
@@ -214,106 +239,178 @@ interface Tree {
   interface RecordTypeExpression extends TypeExpression {
     List<? extends Pair<? extends Identifier, ? extends TypeExpression>>
     getFields();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface LambdaTypeExpression extends TypeExpression {
     List<? extends Pair<? extends Identifier, ? extends TypeExpression>>
     getParameters();
     TypeExpression getResultType();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface ListTypeExpression extends TypeExpression {
     List<? extends TypeExpression> getTypes();
     boolean hasLastStar();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface TypeOfTypeExpression extends TypeExpression {
     QualifiedIdentifier getOperand();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface BinaryOperationTypeExpression extends TypeExpression {
     TypeExpression getLeft();
     Identifier getOperator();
     TypeExpression getRight();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface QualifiedTypeIdentifier extends TypeExpression {
     List<? extends Identifier> getComponents();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface TypeDeclaration extends Tree {
     Identifier getName();
     Identifier getOperator();
     TypeExpression getBody();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface LambdaExpressionParameter extends Tree {
     Identifier getName();
     TypeExpression getTypeAnnotation();
     Expression getDefaultValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface LambdaExpression extends Expression {
     List<? extends LambdaExpressionParameter> getParameters();
     TypeExpression getTypeConstraint();
     Expression getBody();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface RecordExpression extends Expression {
     List<? extends Pair<? extends Identifier, ? extends Expression>>
     getFields();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface ListExpression extends Expression {
     List<? extends Expression> getElements();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface CompoundExpression extends Expression {
     List<? extends CompoundExpressionElement> getElements();
     boolean hasLastSemicolon();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
 
   interface ThrowExpression extends Expression {
     Expression getOperand();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface ReturnExpression extends Expression {
     @Nullable
     QualifiedIdentifier getDestination();
     @Nullable
     Expression getReturnValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface DoneExpression extends Expression {
     @Nullable
     Expression getReturnValue();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface Declaration extends CompoundExpressionElement {
     boolean isGeneric();
     Identifier getName();
     TypeExpression getType();
     Expression getBody();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface LetDeclaration extends CompoundExpressionElement {
     Identifier getName();
     TypeExpression getType();
     Expression getBody();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface SlotDeclaration extends Tree {
     Identifier getName();
     TypeExpression getType();
     Expression getBody();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface SlotDereferernceExpression extends Expression {
     QualifiedIdentifier getTarget();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface SlotAssignmentExpression extends Expression {
     SlotDereferernceExpression getLeft();
     Expression getRight();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface BinaryOperationExpression extends Expression {
     Expression getLeft();
     Identifier getOperator();
     Expression getRight();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface IndexingExpression extends Expression {
     Expression getLeft();
     Expression getRight();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface ApplicationExpression extends Expression {
     Expression getFunction();
     List<? extends Pair<? extends Identifier, ? extends Expression>> getParameters();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   interface UnaryOperationExpression extends Expression {
     Identifier getOperator();
     Expression getOperand();
+    default <A> A visit(Visitor<A> visitor) {
+      return visitor.visit(this);
+    }
   }
   @Value(staticConstructor = "of")
   class Location {
