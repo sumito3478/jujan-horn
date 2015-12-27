@@ -18,53 +18,11 @@ import lombok.Value;
 import lombok.val;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public interface ImmutableTree extends Tree {
-  class Internal {
-    static Map<String, Class<?>> implMap;
-    static {
-      try {
-        java.util.List<Class<?>> interfaces = Arrays.asList(Tree.class.getDeclaredClasses())
-            .stream()
-            .filter
-            (Tree
-            .class::isAssignableFrom).collect(Collectors.toList());
-        java.util.List<Class<?>> impls = Arrays.asList(ImmutableTree.class.getDeclaredClasses());
-        implMap = interfaces.stream().collect(Collectors.<Class<?>, String, Class<?>>toMap(
-            Class::getSimpleName,
-            (Class<?> x) -> impls.stream().filter(x::isAssignableFrom).findFirst().get()
-        ));
-      } catch (Throwable e) {
-        e.printStackTrace();
-      }
-    }
-  }
-  Tree.Factory factory = (Tree.Factory) Proxy.newProxyInstance(
-      ImmutableTree.class.getClassLoader(),
-      new Class[]{Tree.Factory.class},
-      new InvocationHandler() {
-        private final Object dummy = new Object();
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-          val name = method.getName();
-          if (!name.startsWith("new"))
-            return method.invoke(dummy, args);
-          val className = name.substring(3);
-          val c = Internal.implMap.get(className);
-          val m = Arrays.asList(c.getDeclaredMethods()).stream().filter(x -> x.getName().equals
-              ("of"))
-              .findFirst().get();
-          return m.invoke(null, args);
-        }
-      }
-  );
+  Tree.Factory factory = TreeUtil.createFactoryImplementation(ImmutableTree.class);
+
   interface CompoundElement extends Tree.CompoundExpressionElement, ImmutableTree {
 
   }
