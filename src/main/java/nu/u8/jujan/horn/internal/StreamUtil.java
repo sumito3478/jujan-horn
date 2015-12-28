@@ -23,10 +23,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.stream.BaseStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 public class StreamUtil {
-  public static <A, B> Stream<Pair<A, B>> zip(Stream<A> xs, Stream<B> ys) {
+  public static <A, B> Stream<Pair<A, B>> zip(BaseStream<A, ?> xs, BaseStream<B, ?> ys) {
     val it1 = xs.iterator();
     val it2 = ys.iterator();
     val it3 = new Iterator<Pair<A, B>>() {
