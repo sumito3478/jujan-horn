@@ -7,8 +7,8 @@ apply plugin: 'propdeps-maven'
 apply plugin: 'propdeps-idea'
 apply plugin: 'antlr'
 
-description = 'Horn Jujan is an implementation of Jujan Programming Language based on JVM'
-version = '1.0.0-m.1.1'
+description = 'KafeiJujan is an implementation of Jujan Programming Language based on JVM'
+version = '1.0.0-alpha.151228.1954'
 
 compileJava {
   sourceCompatibility = 8
