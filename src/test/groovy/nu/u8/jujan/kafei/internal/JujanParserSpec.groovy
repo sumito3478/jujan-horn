@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this software. If not, see http://www.gnu.org/licenses/.
 
-package nu.u8.jujan.horn.internal
+package nu.u8.jujan.kafei.internal
 
 import org.antlr.v4.runtime.ANTLRInputStream
 import org.antlr.v4.runtime.BailErrorStrategy
