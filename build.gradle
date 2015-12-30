@@ -7,8 +7,8 @@ apply plugin: 'propdeps-maven'
 apply plugin: 'propdeps-idea'
 apply plugin: 'antlr'
 
-description = 'KafeiJujan is an implementation of Jujan Programming Language based on JVM'
-version = '1.0.0-alpha.151228.2002'
+description = 'GalãoJujan is an implementation of Jujan Programming Language based on JVM'
+version = '1.0.0-alpha.151229.2215'
 
 compileJava {
   sourceCompatibility = 8
@@ -29,7 +29,7 @@ buildscript {
 }
 
 generateGrammarSource {
-  arguments += ["-visitor", '-package', 'nu.u8.jujan.kafei.internal']
+  arguments += ["-visitor", '-package', 'nu.u8.jujan.galao.internal']
 }
 
 repositories {
