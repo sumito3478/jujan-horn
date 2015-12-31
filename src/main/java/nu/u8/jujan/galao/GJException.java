@@ -20,6 +20,6 @@ import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends Exception {
+public class GJException extends RuntimeException {
   GJReference object;
 }
