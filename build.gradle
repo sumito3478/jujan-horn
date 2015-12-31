@@ -8,7 +8,7 @@ apply plugin: 'propdeps-idea'
 apply plugin: 'antlr'
 
 description = 'GalãoJujan is an implementation of Jujan Programming Language based on JVM'
-version = '1.0.0-alpha.151230.2300'
+version = '1.0.0-alpha.151231.0014'
 
 compileJava {
   sourceCompatibility = 8
