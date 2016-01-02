@@ -19,12 +19,16 @@ import fj.P;
 import fj.P2;
 import fj.data.TreeMap;
 import lombok.*;
+import nu.u8.jujan.galao.internal.StreamUtil;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -94,6 +98,14 @@ public class GJObject {
       prototypeShape = ps;
       return extend(prototype, values);
     }
+  }
+  public static GJObject fromStream(Stream<P2<String, GJObject>> fields) {
+    List<P2<String, GJObject>> xs = fields.collect(Collectors.toList());
+    Map<String, Link> map = StreamUtil.zip(xs.stream().map(P2::_1), IntStream.range(0, xs.size()))
+        .collect(Collectors.toMap(Pair::getKey, x -> new Link(0, x.getValue())));
+    TreeMap<String, Link> shape = TreeMap.fromMutableMap(Ord.stringOrd, map);
+    GJObject[][] slots = new GJObject[][] { xs.stream().toArray(GJObject[]::new) };
+    return new GJObject(shape, slots, null);
   }
   @Override
   public String toString() {
