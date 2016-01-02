@@ -15,12 +15,19 @@
 
 package nu.u8.jujan.galao;
 import fj.Ord;
+import fj.P;
+import fj.P2;
 import fj.data.TreeMap;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class GJObject {
@@ -96,5 +103,25 @@ public class GJObject {
     });
     builder.append('}');
     return builder.toString();
+  }
+  public Stream<P2<String, GJObject>> stream() {
+    return StreamSupport.stream(
+        Spliterators.spliteratorUnknownSize(
+            shape.iterator(), Spliterator.NONNULL | Spliterator.IMMUTABLE
+        ), false).map(f -> P.p(f._1(), slots[f._2()._1][f._2()._2]));
+  }
+  public Map<String, GJObject> toMutableMap() {
+    return stream().collect(Collectors.toMap(P2::_1, P2::_2));
+  }
+  @Override
+  public boolean equals(Object that) {
+    return that != null &&
+        (this == that ||
+            that instanceof GJObject &&
+                toMutableMap().equals(((GJObject) that).toMutableMap()));
+  }
+  @Override
+  public int hashCode() {
+    return toMutableMap().hashCode();
   }
 }
