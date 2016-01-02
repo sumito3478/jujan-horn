@@ -19,7 +19,6 @@ import fj.P;
 import fj.P2;
 import fj.data.TreeMap;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class GJObject {
   @Nullable
   private final GJObject prototype;
   protected GJObject() {
-    this(TreeMap.empty(Ord.stringOrd), new GJObject[][] { { } }, null);
+    this(TreeMap.empty(Ord.stringOrd), new GJObject[][]{{}}, null);
   }
   public static final GJObject empty = new GJObject();
   @Value
@@ -56,7 +55,9 @@ public class GJObject {
     public GJObject resolve(GJObject x) {
       if (link == null || shape == null || shape != x.shape) {
         shape = x.shape;
-        link = shape.get(name).orSome(() -> { throw new InternalError(); });
+        link = shape.get(name).orSome(() -> {
+          throw new InternalError();
+        });
       }
       return x.slots[link._1][link._2];
     }
