@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class GJObject {
   private final TreeMap<String, Link> shape;
   private final GJObject[][] slots;
@@ -64,7 +64,7 @@ public class GJObject {
   }
   @EqualsAndHashCode
   public static class Extension {
-    private final String[] names;
+    final String[] names;
     @Nullable
     private TreeMap<String, Link> prototypeShape = null;
     @Nullable

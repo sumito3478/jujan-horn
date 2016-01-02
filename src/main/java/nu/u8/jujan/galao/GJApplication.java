@@ -15,12 +15,26 @@
 
 package nu.u8.jujan.galao;
 
+import fj.data.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-
+import lombok.val;
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJApplication extends GJExpression {
   GJLocation location;
-  GJObject object;
+  GJExpression left;
+  GJExpression right;
+  boolean isSingleParameter;
+  transient GJObject.Extension extension = null;
+  public GJObject eval(GJObject env) {
+    val f = left.eval(env);
+    val args = right.eval(env);
+    if (!(f instanceof GJFunction))
+      throw new InternalError("Not a function");
+    return ((GJFunction) f).apply(env, args);
+  }
+  Set<String> capturing(Set<String> env, Set<String> captured) {
+    return right.capturing(env, left.capturing(env, captured));
+  }
 }

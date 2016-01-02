@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
+// Copyright (C) 2016 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
 //
 // This software is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License as published by the
@@ -15,12 +15,30 @@
 
 package nu.u8.jujan.galao;
 
+import fj.data.Set;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
+import lombok.val;
 
+import java.util.stream.Stream;
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJLet extends GJExpression {
   GJLocation location;
-  GJObject object;
+  GJIdentifier name;
+  GJExpression value;
+  GJExpression body;
+  boolean exported;
+  @Getter(lazy = true)
+  private final transient GJObject.Extension extension =
+      new GJObject.Extension(Stream.of(name.getName()));
+  public GJObject eval(GJObject env) {
+    val newEnv = getExtension().extend(env, Stream.of(value.eval(env)));
+    return body.eval(newEnv);
+  }
+  Set<String> capturing(Set<String> env, Set<String> captured) {
+    return body.capturing(env, value.capturing(env, name.capturing(env, captured)));
+  }
+
 }

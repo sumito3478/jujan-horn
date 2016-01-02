@@ -18,9 +18,13 @@ package nu.u8.jujan.galao;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
+import javax.annotation.Nullable;
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
-  GJLocation location;
-  GJObject object;
+public class GJLambdaParameter extends GJObject {
+  GJIdentifier identifier;
+  @Nullable
+  GJExpression typeAnnotation;
+  @Nullable
+  GJObject defaultValue;
 }

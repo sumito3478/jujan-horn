@@ -43,4 +43,8 @@ public class StreamUtil {
     return StreamSupport.stream(
         Spliterators.spliteratorUnknownSize(it3, Spliterator.NONNULL | Spliterator.ORDERED), false);
   }
+  public static <A> Stream<A> fromIterator(Iterator<A> xs) {
+    return StreamSupport.stream(
+      Spliterators.spliteratorUnknownSize(xs, Spliterator.NONNULL | Spliterator.ORDERED), false);
+  }
 }

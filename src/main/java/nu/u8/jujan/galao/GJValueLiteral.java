@@ -20,7 +20,10 @@ import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJValueLiteral extends GJExpression {
   GJLocation location;
-  GJObject object;
+  GJObject value;
+  public GJObject eval(GJObject env) {
+    return value;
+  }
 }

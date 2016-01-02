@@ -15,12 +15,24 @@
 
 package nu.u8.jujan.galao;
 
+import fj.data.Set;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJIdentifier extends GJExpression {
   GJLocation location;
-  GJObject object;
+  String name;
+  @Getter(lazy = true)
+  private final transient Resolution resolver = new Resolution(name);
+  public GJObject eval(GJObject env) {
+    return getResolver().resolve(env);
+  }
+  Set<String> capturing(Set<String> env, Set<String> captured) {
+    if (env.member(name))
+      return captured;
+    return captured.insert(name);
+  }
 }

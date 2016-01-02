@@ -12,15 +12,20 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with this software. If not, see http://www.gnu.org/licenses/.
-
 package nu.u8.jujan.galao;
-
+import fj.data.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJUnaryOperation extends GJExpression {
   GJLocation location;
-  GJObject object;
+  GJIdentifier operator;
+  GJExpression operand;
+  public GJObject eval(GJObject env) {
+    return null;
+  }
+  Set<String> capturing(Set<String> env, Set<String> captured) {
+    return operator.capturing(env, operand.capturing(env, captured));
+  }
 }

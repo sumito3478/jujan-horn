@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
+// Copyright (C) 2016 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
 //
 // This software is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,18 @@ package nu.u8.jujan.galao;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
+import javax.annotation.Nullable;
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJReturn extends GJExpression {
   GJLocation location;
-  GJObject object;
+  @Nullable
+  GJExpression target;
+  @Nullable
+  GJExpression value;
+  @Override
+  public GJObject eval(GJObject env) {
+    throw new Return(target == null ? null : (GJFunction)target.eval(env),
+        value == null ? new GJNil(location) : value.eval(env));
+  }
 }

@@ -15,12 +15,22 @@
 
 package nu.u8.jujan.galao;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import fj.data.Set;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Value
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@ToString
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
-  GJLocation location;
-  GJObject object;
+public abstract class GJExpression extends GJObject {
+  public abstract GJLocation getLocation();
+  public abstract GJObject eval(GJObject env);
+//  {
+//    throw new GJException(new GJText("Not implemented yet"));
+//  }
+  Set<String> capturing(Set<String> env, Set<String> captured) {
+    return env;
+  }
 }

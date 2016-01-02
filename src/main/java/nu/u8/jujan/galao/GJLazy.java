@@ -15,12 +15,24 @@
 
 package nu.u8.jujan.galao;
 
+import fj.data.Set;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
 
+import javax.annotation.Nullable;
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
-  GJLocation location;
-  GJObject object;
+public class GJLazy extends GJObject {
+  GJObject env;
+  GJExpression body;
+  @Getter(lazy = true)
+  private final transient GJObject value = body.eval(this.env);
+  public GJObject eval(GJObject env) {
+    return getValue();
+  }
+  Set<String> capturing(Set<String> env, Set<String> captured) {
+    return body.capturing(env, captured);
+  }
+
 }

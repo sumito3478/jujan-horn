@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
+// Copyright (C) 2016 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
 //
 // This software is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License as published by the
@@ -12,15 +12,24 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with this software. If not, see http://www.gnu.org/licenses/.
-
 package nu.u8.jujan.galao;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
-
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
+public class GJCompoundExpression extends GJExpression {
   GJLocation location;
-  GJObject object;
+  @Getter(value = AccessLevel.PRIVATE)
+  GJExpression[] expressions;
+  boolean endsWithSemicolon;
+  public GJObject eval(GJObject env) {
+    GJObject ret = null;
+    for (int i = 0; i < expressions.length; ++i)
+      ret = expressions[i].eval(env);
+    return endsWithSemicolon ? new GJNil(location) : ret;
+  }
+
 }

@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
+// Copyright (C) 2016 Tomoaki Takezoe (a.k.a @sumito3478) <sumito3478@gmail.com>
 //
 // This software is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Lesser General Public License as published by the
@@ -16,11 +16,10 @@
 package nu.u8.jujan.galao;
 
 import lombok.EqualsAndHashCode;
-import lombok.Value;
-
-@Value
 @EqualsAndHashCode(callSuper = true)
-public class GJException extends RuntimeException {
-  GJLocation location;
-  GJObject object;
+public class ControlThrowable extends RuntimeException {
+  @Override
+  public Throwable fillInStackTrace() {
+    return this;
+  }
 }
