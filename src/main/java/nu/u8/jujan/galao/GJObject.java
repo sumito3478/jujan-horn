@@ -28,13 +28,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class GJObject {
   private final TreeMap<String, Link> shape;
   private final GJObject[][] slots;
   @Getter
   @Nullable
   private final GJObject prototype;
+  GJObject(TreeMap<String, Link> shape, GJObject[][] slots, GJObject prototype) {
+    this.shape = shape;
+    this.slots = slots;
+    this.prototype = prototype;
+  }
   protected GJObject() {
     this(TreeMap.empty(Ord.stringOrd), new GJObject[][]{{}}, null);
   }
