@@ -21,6 +21,7 @@ import fj.data.List;
 import fj.data.Set;
 import fj.data.TreeMap;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 import lombok.val;
@@ -50,9 +51,9 @@ public class GJLambda extends GJExpression {
       }
     }
     if (captureAll)
-      return new GJFunction(env.stream().collect(Collectors.toList()), this);
-    return new GJFunction(env.stream().filter(f -> captured.member(f._1()))
-        .collect(Collectors.toList()), this);
+      return new GJFunction(env, this);
+    return new GJFunction(GJObject.fromStream(env.stream().filter(f -> captured.member(f._1()))),
+        this);
   }
   Set<String> capturing(Set<String> env, Set<String> captured) {
     return body.capturing(env, captured);

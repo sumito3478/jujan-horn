@@ -25,11 +25,8 @@ import java.util.stream.Stream;
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class GJFunction extends GJObject {
-  @Getter(AccessLevel.PRIVATE)
-  List<P2<String, GJObject>> captured;
+  GJObject captured;
   GJLambda code;
-  @Getter(lazy = true)
-  private final transient Extension captureExtension = new Extension(captured.stream().map(P2::_1));
   Stream<String> parameters() {
     return StreamUtil.fromIterator(code.getParameters().iterator())
         .map(p -> p.getIdentifier().getName());
@@ -42,10 +39,9 @@ public class GJFunction extends GJObject {
       new Extension(parameters());
   public GJObject apply(GJObject env, GJObject args) {
     try {
-      GJObject e1 = getCaptureExtension().extend(env, captured.stream().map(P2::_2));
-      GJObject e2 = getParameterExtension().extend(e1, getParameterResolver().stream()
+      GJObject newEnv = getParameterExtension().extend(captured, getParameterResolver().stream()
           .map(r -> r.resolve(args)));
-      return code.getBody().eval(e2);
+      return code.getBody().eval(newEnv);
     } catch (Return e) {
       if (e.getTarget() == null || e.getTarget() == this)
         return e.getValue();
