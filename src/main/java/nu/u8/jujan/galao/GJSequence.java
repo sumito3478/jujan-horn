@@ -15,7 +15,10 @@
 
 package nu.u8.jujan.galao;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.util.stream.Stream;
@@ -23,10 +26,10 @@ import java.util.stream.Stream;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class GJSequence implements GJReference {
-  GJReference[] value;
-  public GJSequence(Stream<GJReference> xs) {
-    value = xs.toArray(GJReference[]::new);
+@EqualsAndHashCode(callSuper = true)
+public class GJSequence extends GJObject {
+  GJObject[] value;
+  public GJSequence(Stream<GJObject> xs) {
+    value = xs.toArray(GJObject[]::new);
   }
 }

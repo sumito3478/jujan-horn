@@ -15,10 +15,12 @@
 
 package nu.u8.jujan.galao;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-public class GJNil implements GJReference {
+@EqualsAndHashCode(callSuper = true)
+public class GJNil extends GJObject {
   String fileName;
   int line;
   int column;

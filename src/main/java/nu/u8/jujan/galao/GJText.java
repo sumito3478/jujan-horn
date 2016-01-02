@@ -15,9 +15,11 @@
 
 package nu.u8.jujan.galao;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-public class GJText implements GJReference {
+@EqualsAndHashCode(callSuper = true)
+public class GJText extends GJObject {
   String value;
 }

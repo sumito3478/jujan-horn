@@ -15,10 +15,12 @@
 
 package nu.u8.jujan.galao;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-public class GJLocation implements GJReference {
+@EqualsAndHashCode(callSuper = true)
+public class GJLocation extends GJObject {
   String fileName;
   int line;
   int column;

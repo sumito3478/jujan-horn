@@ -16,10 +16,15 @@
 package nu.u8.jujan.galao;
 
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.jscience.mathematics.number.LargeInteger;
 
 @Value
-public class GJInteger implements GJReference {
+@EqualsAndHashCode(callSuper = true)
+public class GJInteger extends GJObject {
   LargeInteger value;
+  public GJInteger(int value) {
+    this.value = LargeInteger.valueOf(value);
+  }
 }
