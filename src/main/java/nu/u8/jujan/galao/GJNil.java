@@ -21,7 +21,5 @@ import lombok.Value;
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class GJNil extends GJObject {
-  String fileName;
-  int line;
-  int column;
+  GJLocation location;
 }
