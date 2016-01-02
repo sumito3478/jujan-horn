@@ -8,7 +8,7 @@ apply plugin: 'propdeps-idea'
 apply plugin: 'antlr'
 
 description = 'GalãoJujan is an implementation of Jujan Programming Language based on JVM'
-version = '1.0.0-alpha.160102.0731'
+version = '1.0.0-alpha.160102.0754'
 
 compileJava {
   sourceCompatibility = 8
@@ -29,7 +29,7 @@ buildscript {
 }
 
 generateGrammarSource {
-  arguments += ["-visitor", '-package', 'nu.u8.jujan.galao.internal']
+  arguments += ["-visitor", '-package', 'nu.u8.jujan.galao.antlr']
 }
 
 repositories {

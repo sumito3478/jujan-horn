@@ -58,7 +58,7 @@ public class GJActor extends GJObject {
     ((GJFunction)receive.resolve(module)).apply(GJObject.empty,
         message.extend(null, Stream.of(envelope.getMessage())));
   }
-  void send(GJEnvelope envelope) {
+  public void send(GJEnvelope envelope) {
     mailbox.add(envelope);
   }
 }
